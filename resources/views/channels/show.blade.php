@@ -8,11 +8,20 @@
                 <div class="card-header">{{ $channel->name }}</div>
 
                 <div class="card-body">
-                    <form id="update-channel-form" action="{{ route('channels.update', $channel->id) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('put')
+                    
+                    @if ($channel->editable())
+                        
+                        <form id="update-channel-form" action="{{ route('channels.update', $channel->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('put')
+
+                    @endif
+
                         <div class="form-group row justify-content-center">
                             <div class="channel-avatar">
+
+                                @if ($channel->editable())
+
                                 <div class="channel-avatar-overlay" onclick="document.getElementById('image').click();">
                                     <svg xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve" width="50px" height="50px" class=""><g><g>
                                         <path d="M55.201,15.5h-8.524l-4-10H17.323l-4,10H12v-5H6v5H4.799C2.152,15.5,0,17.652,0,20.299v29.368   C0,52.332,2.168,54.5,4.833,54.5h50.334c2.665,0,4.833-2.168,4.833-4.833V20.299C60,17.652,57.848,15.5,55.201,15.5z M8,12.5h2v3H8   V12.5z M58,49.667c0,1.563-1.271,2.833-2.833,2.833H4.833C3.271,52.5,2,51.229,2,49.667V20.299C2,18.756,3.256,17.5,4.799,17.5H6h6   h2.677l4-10h22.646l4,10h9.878c1.543,0,2.799,1.256,2.799,2.799V49.667z" data-original="#000000" class="active-path" data-old_color="#ffffff" fill="#ffffff"/>
@@ -21,28 +30,59 @@
                                         <path d="M52,19.5c-2.206,0-4,1.794-4,4s1.794,4,4,4s4-1.794,4-4S54.206,19.5,52,19.5z M52,25.5c-1.103,0-2-0.897-2-2s0.897-2,2-2   s2,0.897,2,2S53.103,25.5,52,25.5z" data-original="#000000" class="active-path" data-old_color="#ffffff" fill="#ffffff"/>
                                 </g></g> </svg>
                                 </div>
+                                    
+                                @endif
+
                                 <img src="{{ $channel->image() }}" alt="{{ $channel->name }}">
                             </div>
                         </div>
-                        <input onchange="document.getElementById('update-channel-form').submit();" id="image" type="file" name="image" class="d-none">
-                        <div class="form-group">
-                            <label for="name" class="form-control-label">
-                                Name:
-                            </label>
-                            <input id="name" name="name" type="text" class="form-control" value="{{ $channel->name }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="form-control-label">
-                                Description:
-                            </label>
-                            <textarea id="description" name="description" type="text" rows="3" class="form-control">
+
+                        <div class="form-group text-center">
+                            <h4>
+                                {{ $channel->name }}
+                            </h4>
+                            <p>
                                 {{ $channel->description }}
-                            </textarea>
+                            </p>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-info">Update Channel</button>
-                        </div>
+                        
+                        @if ($channel->editable())
+                            
+                            <input onchange="document.getElementById('update-channel-form').submit();" id="image" type="file" name="image" class="d-none">
+                            <div class="form-group">
+                                <label for="name" class="form-control-label">
+                                    Name:
+                                </label>
+                                <input id="name" name="name" type="text" class="form-control" value="{{ $channel->name }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="form-control-label">
+                                    Description:
+                                </label>
+                                <textarea id="description" name="description" type="text" rows="3" class="form-control">
+                                    {{ $channel->description }}
+                                </textarea>
+                            </div>
+
+                            @if ($errors->any())
+                                <ul class="list-group mb-3 list-unstyled">
+                                    @foreach ($errors->all() as $error)
+                                        <li class="list-item text-danger">
+                                            {{ $error }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-info">Update Channel</button>
+                            </div>
+
+                        @endif
+
+                     @if ($channel->editable())
                     </form>
+                    @endif
                 </div>
             </div>
         </div>
