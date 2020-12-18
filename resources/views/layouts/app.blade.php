@@ -82,5 +82,17 @@
             @yield('content')
         </main>
     </div>
+
+    <script>
+        window.AuthUser = '{!! auth()->user() !!}'
+
+        window.__auth = function () { // __ znaci da je junik, mozda neki paket koji koristimo definise auth funkciju unutar window objekta, ovako to izbegavamo
+            try {
+                return JSON.parse(AuthUser)
+            } catch (error) {
+                return null
+            }
+        }
+    </script>
 </body>
 </html>

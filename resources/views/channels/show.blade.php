@@ -44,9 +44,11 @@
                             <p>
                                 {{ $channel->description }}
                             </p>
-                            <button class="btn btn-danger text-center">
-                                Subscribe 7k
-                            </button>
+                            <subscribe-button :subscriptions="{{ $channel->subscriptions }}" inline-template>
+                                <button @click="toggleSubscription" class="btn btn-danger">
+                                    Subscribe 7k
+                                </button>
+                            </subscribe-button>
                         </div>
                         
                         @if ($channel->editable())
