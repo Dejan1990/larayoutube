@@ -1,3 +1,5 @@
+import numeral from 'numeral';
+
 Vue.component('subscribe-button', {
     props: {
         channel: {
@@ -5,6 +7,7 @@ Vue.component('subscribe-button', {
             required: true,
             default: () => ({})
         },
+
         subscriptions: {
             type: Array,
             required: true,
@@ -12,7 +15,7 @@ Vue.component('subscribe-button', {
         }
     },
 
-    computed: {
+    computed: { //computed ucitava automatski zajedno sa stranicom
         subscribed() {
             if (! __auth() || this.channel.user_id === __auth().id) return false
 
@@ -23,6 +26,10 @@ Vue.component('subscribe-button', {
             if(__auth() && this.channel.user_id === __auth().id) return true // uvek testirati, koristiti i drugi browser
 
             return false
+        },
+
+        count() {
+            return numeral(this.subscriptions.length).format('0a')
         }
     },
 
