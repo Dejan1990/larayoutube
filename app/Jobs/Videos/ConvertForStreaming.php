@@ -4,7 +4,9 @@ namespace App\Jobs\Videos;
 
 // Job despatched every time when new video is uploaded // wheb the new video is uploaded we'l push job to the queue, so that video can be converted
 
+use FFMpeg;
 use App\Video;
+use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -34,6 +36,16 @@ class ConvertForStreaming implements ShouldQueue
      */
     public function handle()
     {
-        echo 'Converted';
+        $low = (new X264('aac'))->setKiloBitrate(100); 
+        $mid = (new X264('aac'))->setKiloBitrate(250); 
+        $high = (new X264('aac'))->setKiloBitrate(500); 
+
+        FFMpeg::fromDisk('local')
+            ->open($this->video->path)
+            ->exportForHLS()
+            ->addFormat($low)
+            ->addFormat($mid)
+            ->addFormat($high)
+            ->save("public/videos/{$this->video->id}/{$this->video->id}.m3u8");
     }
 }
