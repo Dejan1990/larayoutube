@@ -42,7 +42,7 @@ Vue.component('subscribe-button', {
         },
 
         count() {
-            return numeral(this.subscriptions.length).format('0a.0')
+            return numeral(this.subscriptions.length).format('0a')
         }
     },
 
