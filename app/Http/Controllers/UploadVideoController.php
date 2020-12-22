@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Channel;
 use App\Jobs\Videos\ConvertForStreaming;
+use App\Jobs\Videos\CreateVideoThumbnail;
 
 class UploadVideoController extends Controller
 {
@@ -21,6 +22,8 @@ class UploadVideoController extends Controller
             'title' => request()->title,
             'path' => request()->video->store("channels/{$channel->id}")
         ]);
+
+        $this->dispatch(new CreateVideoThumbnail($video));
 
         $this->dispatch(new ConvertForStreaming($video));
         return $video;
