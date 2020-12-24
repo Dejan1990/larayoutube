@@ -9,6 +9,10 @@ class VideoController extends Controller
 {
     public function show(Video $video)
     {
-        return $video;
+        if (request()->wantsJson()) { //wantsJson()->proverava da li je ovo AJAX request i AJAX odgovor na request
+            return $video;
+        }
+
+        return view('video', compact('video'));
     }
 }
