@@ -24,6 +24,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('channels', 'ChannelController');
 Route::get('videos/{video}', [VideoController::class, 'show']);
+Route::put('videos/{video}', [VideoController::class, 'updateViews']);
 
 Route::middleware(['auth'])->group(function () {
     Route::post('channels/{channel}/videos', [UploadVideoController::class, 'store']);

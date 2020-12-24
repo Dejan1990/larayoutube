@@ -15,10 +15,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $user1 = factory(User::class)->create([
+            'name' => 'John Doe',
             'email' => 'johndoe@mail.com'
         ]);
 
         $user2 = factory(User::class)->create([
+            'name' => 'Jane Doe',
             'email' => 'janedoe@mail.com'
         ]);
 
