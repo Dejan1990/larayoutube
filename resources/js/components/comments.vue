@@ -33,7 +33,10 @@
             </div>
         </div>
         <div class="text-center">
-            <button class="btn btn-success">Load more</button>
+            <button v-if="comments.next_page_url" @click="fetchComments" class="btn btn-success">Load more</button>
+            <!-- v-if="comments.next_page_url" postavljamo da resimo gresku vracanja od prve strane komentara kad sve pregledamo -->
+
+            <span v-else class="text-danger">No more comments to show :)</span>
         </div>
     </div>
 </template>
@@ -59,8 +62,16 @@ export default {
 
    methods: {
        fetchComments() {
-           axios.get(`/videos/${this.video.id}/comments`).then(({ data }) => {
-               this.comments = data
+           const url = this.comments.next_page_url ? this.comments.next_page_url : `/videos/${this.video.id}/comments`
+           axios.get(url).then(({ data }) => {
+               this.comments = { // pravimo novi objekat i mi spreading sve podatke sa servera, osim data property data: this.comments.data.push(data.data)
+                   ...data,
+                   data: [
+                       //for data property we gonna push the new comments comming from the server(data.data) in to the old comments(this.comments.data)
+                       ...this.comments.data,
+                       ...data.data
+                   ] 
+               }
            })
        }
    },
