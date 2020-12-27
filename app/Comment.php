@@ -4,6 +4,8 @@ namespace App;
 
 class Comment extends Model
 {
+    protected $with = ['user']; //Automatically load the user(relationship) who created the comment
+
     public function video()
     {
         return $this->belongsTo(Video::class);
