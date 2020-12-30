@@ -1,8 +1,8 @@
 <template>
     <div class="card mt-5 p-5">
-        <div class="form-inline my-4 w-full">
-                <input type="text" class="form-control form-control-sm w-80">
-                <button class="btn btn-sm btn-primary">
+        <div v-if="auth" class="form-inline my-4 w-full">
+                <input v-model="newComment" type="text" class="form-control form-control-sm w-80">
+                <button @click="addComment" class="btn btn-sm btn-primary">
                     <small>Add comment</small>
                 </button>
         </div>
@@ -14,7 +14,10 @@
                 <h6 class="mt-0">{{ comment.user.name }}</h6>
                 <small>{{ comment.body }}</small>
 
-                <votes :default_votes="comment.votes" :entity_id="comment.id" :entity_owner="comment.user.id"></votes>
+                <div class="d-flex">
+                    <votes :default_votes="comment.votes" :entity_id="comment.id" :entity_owner="comment.user.id"></votes>
+                    <button class="btn btn-sm btn-default ml-2">Add Reply</button>
+                </div>
                 <replies :comment="comment"></replies>
             </div>
         </div>
@@ -39,11 +42,18 @@ export default {
        this.fetchComments();
    }, 
 
+   computed: {
+        auth() {
+            return __auth()
+        }
+    },
+
    data() {
        return {
            comments: {
                data: []
-           }
+           },
+           newComment: ''
        }
    },
 
@@ -60,7 +70,22 @@ export default {
                    ] 
                }
            })
-       }
+       },
+
+       addComment() {
+            if (! this.newComment) return
+            axios.post(`/comments/${this.video.id}`, {
+                body: this.newComment
+            }).then(({ data }) => {
+                this.comments = {
+                    ...this.comments,
+                    data: [
+                        data,
+                        ...this.comments.data
+                    ]
+                }
+            })
+        }
    },
 }
 </script>
