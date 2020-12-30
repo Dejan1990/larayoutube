@@ -4,7 +4,7 @@ namespace App;
 
 class Comment extends Model
 {
-    protected $with = ['user']; //Automatically load the user(relationship) who created the comment
+    protected $with = ['user', 'votes']; //Automatically load the user(relationship) who created the comment
 
     protected $appends = ['repliesCount'];
 
@@ -26,5 +26,10 @@ class Comment extends Model
     public function getRepliesCountAttribute() //getSomethingAttribute -> something like computed property(Vue.js)
     {
         return $this->replies->count();
+    }
+
+    public function votes()
+    {
+        return $this->morphMany(Vote::class, 'voteable');
     }
 }
