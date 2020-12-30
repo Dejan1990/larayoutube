@@ -20,7 +20,7 @@ $factory->define(Comment::class, function (Faker $faker) {
 
         'body' => $faker->sentence(6), //Vraca Array(koji pocinje od nule) zato u bazi negde ima 7 reci
         'user_id' => User::pluck('id')->random(),
-        'video_id' => Video::pluck('id'),
+        'video_id' => Video::pluck('id')->random(),
         'comment_id' => null
     ];
 });

@@ -6,6 +6,8 @@ class Comment extends Model
 {
     protected $with = ['user']; //Automatically load the user(relationship) who created the comment
 
+    protected $appends = ['repliesCount'];
+
     public function video()
     {
         return $this->belongsTo(Video::class);
@@ -19,5 +21,10 @@ class Comment extends Model
     public function replies() // zato sto ime relationship-a nije po konvenciji moramo u zagradi da definisemo foreign_key (Comment::class, 'comment_id') -> 'comment_id'
     {
         return $this->hasMany(Comment::class, 'comment_id')->whereNotNull('comment_id');
+    }
+
+    public function getRepliesCountAttribute() //getSomethingAttribute -> something like computed property(Vue.js)
+    {
+        return $this->replies->count();
     }
 }
