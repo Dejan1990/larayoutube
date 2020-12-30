@@ -6,21 +6,9 @@
                     <small>Add comment</small>
                 </button>
         </div>
-        <div class="media my-3" v-for="comment in comments.data" :key="comment.id">
-            <!--<img width="30" height="30" class="rounded-circle mr-3" src="https://picsum.photos/id/42/200/200">-->
-            <avatar :username="comment.user.name" :size="30" style="margin-right: 15px;"></avatar>
 
-            <div class="media-body">
-                <h6 class="mt-0">{{ comment.user.name }}</h6>
-                <small>{{ comment.body }}</small>
+        <Comment v-for='comment in comments.data' :key="comment.id" :comment="comment" />
 
-                <div class="d-flex">
-                    <votes :default_votes="comment.votes" :entity_id="comment.id" :entity_owner="comment.user.id"></votes>
-                    <button class="btn btn-sm btn-default ml-2">Add Reply</button>
-                </div>
-                <replies :comment="comment"></replies>
-            </div>
-        </div>
         <div class="text-center">
             <button v-if="comments.next_page_url" @click="fetchComments" class="btn btn-success">Load more</button>
             <!-- v-if="comments.next_page_url" postavljamo da resimo gresku vracanja od prve strane komentara kad sve pregledamo -->
@@ -30,13 +18,12 @@
     </div>
 </template>
 <script>
-import Avatar from 'vue-avatar'
-import Replies from './replies.vue'
+import Comment from './comment.vue'
 
 export default {
     props: ['video'],
 
-    components: { Avatar, Replies },
+    components: { Comment },
 
    mounted() {
        this.fetchComments();
