@@ -15,25 +15,25 @@ class Channel extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
-    public function image()  // Ovo je odgovor iz osme lekcije, pokazuje sliku  
+   /* public function image()  // Ovo je odgovor iz osme lekcije, pokazuje sliku  
     {     
         if ($this->media->first()) {  
             $Fan = $this->getFirstMediaUrl('images', 'thumb');   
             $Tan = str_replace("http://localhost","","$Fan");         
-            return $Tan;    
+            return $Tan;  
         }
 
         return null; 
-    }
+    }*/
 
-   /* public function image() //Ovo je Katijevo, ali nije pokazivalo sliku
+    public function image() //Ovo je Katijevo, ali nije pokazivalo sliku
     {
         if ($this->media->first()) {
             return $this->media->first()->getFullUrl('thumb');
         }
 
         return null;
-    }*/
+    }
 
     public function editable()
     {
